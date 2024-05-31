@@ -44,13 +44,8 @@ module InputCurrentCalculator #(
                 end
             end
             // Handle overflow
-            if (current_sum > 127) begin
-                input_current <= 8'b0111_1111;  // Clamp to 127
-            end else if (current_sum < -128) begin
-                input_current <= 8'b1000_0000;  // Clamp to -128
-            end else begin
-                input_current <= current_sum[7:0];
-            end
+            input_current <= current_sum[7:0];
+        
         end
     end
 endmodule
