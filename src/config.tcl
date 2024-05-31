@@ -30,6 +30,9 @@ set ::env(LINTER_INCLUDE_PDK_MODELS) 1
 # https://tinytapeout.com/faq/#how-can-i-map-an-additional-external-clock-to-one-of-the-gpios
 set ::env(CLOCK_PORT) {clk}
 
+set ::env(CLOCK_PORT) "uio_in\\\[3\\\]"
+set ::env(BASE_SDC_FILE) "$::env(DESIGN_DIR)/project.sdc"
+
 # Configuration docs: https://openlane.readthedocs.io/en/latest/reference/configuration.html
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
