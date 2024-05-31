@@ -1,42 +1,46 @@
-module memory #(parameter M = 320, parameter N = 8) (
-    input wire [N-1:0] data_in,
-    input wire [9-1:0] addr, // input wire [$clog2(M)-1:0] addr,
-    input wire write_enable,
-    input wire clk,
-    input wire reset,
-    output reg [N-1:0] data_out,
-    output reg [M*N-1:0] all_data_out
+module memory (
+    input [7:0] data_in,
+    input [8:0] addr,
+    input write_enable,
+    input clk,
+    input reset,
+    output reg [7:0] data_out,
+    output reg [320*8-1:0] all_data_out
 );
 
-    // Declare individual flip-flops for each bit of the memory
-    reg mem [0:M-1][N-1:0];
-    integer i, j;
+    // Define the memory array
+    reg [7:0] mem [0:319];
+    integer i;
 
+    // Memory write and read operation
     always @(posedge clk or posedge reset) begin
         if (reset) begin
-            // Asynchronous reset: clear all memory contents
-            for (i = 0; i < M; i = i + 1) begin
-                for (j = 0; j < N; j = j + 1) begin
-                    mem[i][j] <= 0;
-                end
+            // Reset memory contents
+            for (i = 0; i < 320; i = i + 1) begin
+                mem[i] <= 8'b0;
             end
+            data_out <= 8'b0;
         end else if (write_enable) begin
-            for (j = 0; j < N; j = j + 1) begin
-                mem[addr][j] <= data_in[j];
-            end
+            mem[addr] <= data_in;
         end
     end
 
-    always @(*) begin
-        // Output the data at the current address
-        for (j = 0; j < N; j = j + 1) begin
-            data_out[j] = mem[addr][j];
+    // Data output operation
+    always @(posedge clk) begin
+        if (!reset) begin
+            data_out <= mem[addr];
+        end else begin
+            data_out <= 8'b0;
         end
+    end
 
-        // Concatenate all memory data into all_data_out
-        for (i = 0; i < M; i = i + 1) begin
-            for (j = 0; j < N; j = j + 1) begin
-                all_data_out[i*N + j] = mem[i][j];
+    // Update all_data_out
+    always @(posedge clk or posedge reset) begin
+        if (reset) begin
+            all_data_out <= {(320*8){1'b0}};
+        end else begin
+            for (i = 0; i < 320; i = i + 1) begin
+                all_data_out[i*8 +: 8] = mem[i];
             end
         end
     end
