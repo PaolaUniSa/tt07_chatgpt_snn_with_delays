@@ -4,7 +4,7 @@ module spi_interface (
     output wire clk_div_ready_reg_out,
     output wire input_spike_ready_reg_out,
     output wire debug_config_ready_reg_out,
-    output wire [320*8-1:0] all_data_out //output wire [M*N-1:0] all_data_out
+    output wire [320*8-1-4*8*8-4*8*4:0] all_data_out //output wire [M*N-1:0] all_data_out
 );
     // Internal signals
     wire [7:0] received_data;
@@ -69,7 +69,7 @@ module spi_interface (
     );
 
     // Instantiate the memory module
-    memory #(320, 8) memory_inst (
+    memory #(320-4*8-4*4, 8) memory_inst (
         .data_in(received_data),
         .addr({SPI_address_MSB_reg_out[0], SPI_address_LSB_reg_out}), //SPI_address_MSB_reg_out[$clog2(M)-8-1:0]
         .write_enable(write_memory_enable),
