@@ -32,4 +32,4 @@ module memory #(parameter M = 320, parameter N = 8) (
             all_data_out[i*N +: N] = mem[i];
         end
     end
-
+endmodule
