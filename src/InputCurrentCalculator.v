@@ -35,16 +35,11 @@ module InputCurrentCalculator #(
     always @(posedge clk or posedge reset) begin
         if (reset) begin
             input_current <= 8'b0;
-            current_sum <= 0;  // Ensure current_sum is also reset
+            
         end else if (enable) begin
-            current_sum <= 0;  // Initialize current sum to zero
-            for (i = 0; i < M; i = i + 1) begin
-                if (input_spikes[i] == 1'b1) begin
-                    current_sum <= current_sum + weight_array[i];
-                end
-            end
-            // Handle overflow
-            input_current <= current_sum[7:0];
+            
+            input_current <= weight_array[0];
+            
         
         end
     end
