@@ -16,7 +16,7 @@ module spiking_network_top (
     wire input_spike_ready_sync;
     wire debug_config_ready_sync;
     wire [224*8-1:0] all_data_out; //wire [2559:0] all_data_out; 2175:0 // wire [2559-4*8*8-4*8*4:0] all_data_out;
-    wire [23-4:0] input_spikes;   //wire [23:0] input_spikes;
+    wire [23-8:0] input_spikes;   //wire [23:0] input_spikes;
     wire [7:0] decay;
     wire [7:0] refractory_period;
     wire [7:0] threshold;
@@ -108,7 +108,7 @@ module spiking_network_top (
     );
 
     // Corrected Assignments
-    assign input_spikes = all_data_out[23-4:0];          // The first 3 bytes of all_data_out are the input spikes for SNNwithDelays_top
+    assign input_spikes = all_data_out[23-8:0];          // The first 3 bytes of all_data_out are the input spikes for SNNwithDelays_top
     assign decay = all_data_out[31:24];                // The fourth byte of all_data_out is the decay input for SNNwithDelays_top
     assign refractory_period = all_data_out[39:32];    // The fifth byte of all_data_out is the refractory period input for SNNwithDelays_top
     assign threshold = all_data_out[47:40];            // The sixth byte of all_data_out is the threshold input for SNNwithDelays_top
