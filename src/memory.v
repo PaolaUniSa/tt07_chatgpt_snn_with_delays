@@ -1,48 +1,35 @@
-module memory (
-    input [7:0] data_in,
-    input [8:0] addr,
-    input write_enable,
-    input clk,
-    input reset,
-    output reg [7:0] data_out,
-    output reg [320*8-1:0] all_data_out
+module memory #(parameter M = 320, parameter N = 8) (
+    input wire [N-1:0] data_in,
+    input wire [$clog2(M)-1:0] addr,
+    input wire write_enable,
+    input wire clk,
+    input wire reset,
+    output reg [N-1:0] data_out,
+    output reg [M*N-1:0] all_data_out
 );
 
-    // Define the memory array
-    reg [7:0] mem [0:319];
+    // Declare the memory array
+    reg [N-1:0] mem [0:M-1];
     integer i;
 
-    // Memory write and read operation
     always @(posedge clk or posedge reset) begin
         if (reset) begin
-            // Reset memory contents
-            for (i = 0; i < 320; i = i + 1) begin
-                mem[i] <= 8'b0;
+            // Asynchronous reset: clear all memory contents
+            for (i = 0; i < M; i = i + 1) begin
+                mem[i] = 0;  // Use blocking assignment
             end
-            data_out <= 8'b0;
         end else if (write_enable) begin
-            mem[addr] <= data_in;
+            mem[addr] <= data_in;  // Write data to memory
         end
     end
 
-    // Data output operation
-    always @(posedge clk) begin
-        if (!reset) begin
-            data_out <= mem[addr];
-        end else begin
-            data_out <= 8'b0;
+    always @(*) begin
+        // Output the data at the current address
+        data_out = mem[addr];
+
+        // Concatenate all memory data into all_data_out
+        for (i = 0; i < M; i = i + 1) begin
+            all_data_out[i*N +: N] = mem[i];
         end
     end
 
-    // Update all_data_out
-    always @(posedge clk or posedge reset) begin
-        if (reset) begin
-            all_data_out <= {(320*8){1'b0}};
-        end else begin
-            for (i = 0; i < 320; i = i + 1) begin
-                all_data_out[i*8 +: 8] = mem[i];
-            end
-        end
-    end
-
-endmodule
