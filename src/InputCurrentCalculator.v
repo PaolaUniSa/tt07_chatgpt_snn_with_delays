@@ -37,10 +37,10 @@ module InputCurrentCalculator #(
             input_current <= 8'b0;
             current_sum <= 0;  // Ensure current_sum is also reset
         end else if (enable) begin
-            current_sum = 0;  // Initialize current sum to zero
+            current_sum <= 0;  // Initialize current sum to zero
             for (i = 0; i < M; i = i + 1) begin
                 if (input_spikes[i] == 1'b1) begin
-                    current_sum = current_sum + weight_array[i];
+                    current_sum <= current_sum + weight_array[i];
                 end
             end
             // Handle overflow
