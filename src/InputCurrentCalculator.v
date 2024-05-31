@@ -10,14 +10,14 @@ module InputCurrentCalculator #(
 );
     integer i;
     
-    reg signed [12:0] weight_array [0:M-1];
-    reg signed [12:0] current_sum;
+    reg signed [11:0] weight_array [0:M-1];
+    reg signed [11:0] current_sum;
 
     // Convert the flattened weights array into a 2D array
     always @(*) begin
         for (i = 0; i < M; i = i + 1) begin
             weight_array[i][7:0] = weights[i*8 +: 8];
-            weight_array[i][12:8] = 5'b00000;
+            weight_array[i][11:8] = 4'b0000;
         end
     end
 
