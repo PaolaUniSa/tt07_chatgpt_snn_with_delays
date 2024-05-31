@@ -11,19 +11,19 @@ module InputCurrentCalculator #(
     integer i;
     
     reg signed [7:0] weight_array [0:M-1];
-    reg signed [clog2(M*128)-1:0] current_sum;  // Adjusted bit-length for overflow handling
+    reg signed [13:0] current_sum;  // Adjusted bit-length for overflow handling [clog2(M*128)-1:0] current_sum;
 
     // Function to calculate the ceiling of log2
-    function integer clog2;
-        input integer value;
-        integer i;
-        begin
-            clog2 = 0;
-            for (i = value; i > 0; i = i >> 1) begin
-                clog2 = clog2 + 1;
-            end
-        end
-    endfunction
+//    function integer clog2;
+//        input integer value;
+//        integer i;
+//        begin
+//            clog2 = 0;
+//            for (i = value; i > 0; i = i >> 1) begin
+//                clog2 = clog2 + 1;
+//            end
+//        end
+//    endfunction
 
     // Convert the flattened weights array into a 2D array
     always @(*) begin
