@@ -117,4 +117,3 @@ module spiking_network_top (
     assign delays = all_data_out[271*8-1 :8*183];       // Bytes 216-4*8-4*4=168 to 319-4*8=287 of all_data_out are the delays input for SNNwithDelays_top
     assign debug_config_in = all_data_out[272*8-1:271*8]; // Byte 320 of all_data_out is the debug_config_in input for debug_module
 endmodule
-//all_data_out[2559-4*8*8-4*8*4:0] -- 2175-0 272bytes     2449
