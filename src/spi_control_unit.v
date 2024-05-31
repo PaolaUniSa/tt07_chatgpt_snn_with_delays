@@ -112,6 +112,7 @@ module spi_control_unit (
                             8'h05: clk_div_ready_en <= 1;
                             8'h07: input_spike_ready_en <= 1;
                             8'h09: debug_config_ready_en <= 1;
+                        default: ;
                         endcase
                     end
                 end
@@ -119,6 +120,7 @@ module spi_control_unit (
                     if (data_valid) begin
                         case (SPI_instruction_reg_out)
                             8'h01, 8'h05, 8'h07, 8'h09: write_memory_enable <= 1;
+                        default: ;
                         endcase
                     end
                 end
@@ -136,8 +138,10 @@ module spi_control_unit (
                             debug_config_ready <= 1;
                             debug_config_ready_en <= 1;
                         end
+                        default: ;
                     endcase
                 end
+                default: ;
             endcase
         end
     end
