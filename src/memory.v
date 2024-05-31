@@ -1,6 +1,6 @@
 module memory #(parameter M = 320, parameter N = 8) (
     input wire [N-1:0] data_in,
-    input wire [9-1:0] addr,//input wire [$clog2(M)-1:0] addr,
+    input wire [9-1:0] addr, // input wire [$clog2(M)-1:0] addr,
     input wire write_enable,
     input wire clk,
     input wire reset,
@@ -8,69 +8,37 @@ module memory #(parameter M = 320, parameter N = 8) (
     output reg [M*N-1:0] all_data_out
 );
 
-    // Declare the memory array
-    reg [N-1:0] mem [0:M-1];
-    integer i;
+    // Declare individual flip-flops for each bit of the memory
+    reg mem [0:M-1][N-1:0];
+    integer i, j;
 
     always @(posedge clk or posedge reset) begin
         if (reset) begin
             // Asynchronous reset: clear all memory contents
             for (i = 0; i < M; i = i + 1) begin
-                mem[i] <= 0;  
+                for (j = 0; j < N; j = j + 1) begin
+                    mem[i][j] <= 0;
+                end
             end
         end else if (write_enable) begin
-            mem[addr] <= data_in;  // Write data to memory
+            for (j = 0; j < N; j = j + 1) begin
+                mem[addr][j] <= data_in[j];
+            end
         end
     end
 
     always @(*) begin
         // Output the data at the current address
-        data_out = mem[addr];
+        for (j = 0; j < N; j = j + 1) begin
+            data_out[j] = mem[addr][j];
+        end
 
         // Concatenate all memory data into all_data_out
         for (i = 0; i < M; i = i + 1) begin
-            all_data_out[i*N +: N] = mem[i];
+            for (j = 0; j < N; j = j + 1) begin
+                all_data_out[i*N + j] = mem[i][j];
+            end
         end
     end
 
 endmodule
-
-
-
-
-//module memory #(parameter M = 320, parameter N = 8) (
-//    input wire [N-1:0] data_in,
-//    input wire [$clog2(M)-1:0] addr,
-//    input wire write_enable,
-//    input wire clk,
-//    input wire reset,
-//    output reg [N-1:0] data_out,
-//    output reg [M*N-1:0] all_data_out
-//);
-
-//    // Declare the memory array
-//    reg [N-1:0] mem [0:M-1];
-//    integer i;
-
-//    always @(posedge clk or posedge reset) begin
-//        if (reset) begin
-//            // Asynchronous reset: clear all memory contents
-//            for (i = 0; i < M; i = i + 1) begin
-//                mem[i] = 0;  // Use blocking assignment
-//            end
-//        end else if (write_enable) begin
-//            mem[addr] <= data_in;  // Write data to memory
-//        end
-//    end
-
-//    always @(*) begin
-//        // Output the data at the current address
-//        data_out = mem[addr];
-
-//        // Concatenate all memory data into all_data_out
-//        for (i = 0; i < M; i = i + 1) begin
-//            all_data_out[i*N +: N] = mem[i];
-//        end
-//    end
-
-//endmodule
