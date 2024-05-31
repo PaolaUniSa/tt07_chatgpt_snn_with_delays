@@ -15,14 +15,14 @@ module spiking_network_top (
     wire clk_div_ready_sync;
     wire input_spike_ready_sync;
     wire debug_config_ready_sync;
-    wire [2559-4*8*8-4*8*4:0] all_data_out; //wire [2559:0] all_data_out; 2175:0
+    wire [224*8-1:0] all_data_out; //wire [2559:0] all_data_out; 2175:0 // wire [2559-4*8*8-4*8*4:0] all_data_out;
     wire [23-4:0] input_spikes;   //wire [23:0] input_spikes;
     wire [7:0] decay;
     wire [7:0] refractory_period;
     wire [7:0] threshold;
     wire [7:0] div_value;
-    wire [1663-4*8*8:0] weights;
-    wire [831-4*8*4:0] delays;
+    wire [1663-8*8*8:0] weights;
+    wire [831-8*8*4:0] delays;
     wire [7:0] debug_config_in;
     wire [79:0] membrane_potentials;
     wire [7:0] output_spikes_layer1;
@@ -113,7 +113,8 @@ module spiking_network_top (
     assign refractory_period = all_data_out[39:32];    // The fifth byte of all_data_out is the refractory period input for SNNwithDelays_top
     assign threshold = all_data_out[47:40];            // The sixth byte of all_data_out is the threshold input for SNNwithDelays_top
     assign div_value = all_data_out[55:48];            // The seventh byte of all_data_out is the div_value input for clock_divider
-    assign weights = all_data_out[8*183-1:8*7];        // Bytes 8 to 215-4*8=183 of all_data_out are the weights input for SNNwithDelays_top
-    assign delays = all_data_out[271*8-1 :8*183];       // Bytes 216-4*8-4*4=168 to 319-4*8=287 of all_data_out are the delays input for SNNwithDelays_top
-    assign debug_config_in = all_data_out[272*8-1:271*8]; // Byte 320 of all_data_out is the debug_config_in input for debug_module
+    assign weights = all_data_out[8*151-1:8*7];        // Bytes 8 to 215-4*8=183 of all_data_out are the weights input for SNNwithDelays_top
+    assign delays = all_data_out[223*8-1 :8*151];       // Bytes 216-4*8-4*4=168 to 319-4*8=287 of all_data_out are the delays input for SNNwithDelays_top
+    assign debug_config_in = all_data_out[224*8-1:223*8]; // Byte 320 of all_data_out is the debug_config_in input for debug_module
 endmodule
+//all_data_out[2559-4*8*8-4*8*4:0] -- 2175-0 272bytes     2449
