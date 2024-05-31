@@ -32,6 +32,7 @@ project:
     - "spi_slave.v"
     - "synchronizer.v"
     - "TwoLayerNetwork_debug.v"
+    - "LeakyIntegrateFireNeuron_debug.v"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 pinout:
