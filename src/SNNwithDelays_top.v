@@ -43,7 +43,7 @@ module SNNwithDelays_top(
 //    endgenerate
 
     TwoLayerNetwork_debug #(
-        .M1(24-4), 
+        .M1(24-8), 
         .N1(8), 
         .N2(2)
     ) two_layer_network_inst (
