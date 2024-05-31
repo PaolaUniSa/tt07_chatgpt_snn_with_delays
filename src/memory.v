@@ -16,7 +16,7 @@ module memory #(parameter M = 320, parameter N = 8) (
         if (reset) begin
             // Asynchronous reset: clear all memory contents
             for (i = 0; i < M; i = i + 1) begin
-                mem[i] <= 0;
+                mem[i] = 0;
             end
         end else if (write_enable) begin
             mem[addr] <= data_in;  // Write data to memory
