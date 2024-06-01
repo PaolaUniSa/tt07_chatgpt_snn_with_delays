@@ -1,7 +1,7 @@
 # Makefile
 # See https://docs.cocotb.org/en/stable/quickstart.html for more info
 
-# defaults
+# defaults 
 SIM ?= icarus
 TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
@@ -11,6 +11,7 @@ PROJECT_SOURCES += debug_module.v
 PROJECT_SOURCES += InputCurrentCalculator.v
 PROJECT_SOURCES += LIF_Neuron_debug.v
 PROJECT_SOURCES += memory.v
+PROJECT_SOURCES += NeuronWithDelays_debug.v
 PROJECT_SOURCES += NeuronLayerWithDelays_debug.v
 PROJECT_SOURCES += neuron_delay.v
 PROJECT_SOURCES += programmable_delay.v
