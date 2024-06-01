@@ -30,7 +30,7 @@ module tt_um_chatgpt_snn_with_delays_paolaunisa (
 spiking_network_top spiking_network_top_uut (
     .system_clock(clk),
     .reset(reset),
-    .SCLK(SCLK),
+    .SCLK(clk),
     .MOSI(MOSI),
     .SS(CS),
     .MISO(MISO),
