@@ -118,7 +118,7 @@ module spiking_network_top#(
     assign div_value = all_data_out         [4*Nbits+3*8+8-1:4*Nbits+3*8];                           
     assign weights = all_data_out           [(24*8+8*2)*Nbits+4*Nbits+3*8+8-1:4*Nbits+3*8+8];                        
     assign delays = all_data_out            [2*(24*8+8*2)*Nbits+4*Nbits+3*8+8-1 :(24*8+8*2)*Nbits+4*Nbits+3*8+8];    
-    assign debug_config_in = all_data_out   [2*(24*8+8*2)*Nbits+4*Nbits+3*8+8+8-1:2*(24*8+8*2)*Nbits+4*Nbits+3*8+8-1]; 
+    assign debug_config_in = all_data_out   [2*(24*8+8*2)*Nbits+4*Nbits+3*8+8+8-1:2*(24*8+8*2)*Nbits+4*Nbits+3*8+8]; 
 
 
 endmodule   
