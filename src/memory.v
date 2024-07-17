@@ -1,4 +1,4 @@
-module memory #(parameter M = 320, parameter N = 8) (
+module memory #(parameter M = 10, parameter N = 8) (
     input wire [N-1:0] data_in,
     input wire [$clog2(M)-1:0] addr,
     input wire write_enable,
@@ -10,17 +10,14 @@ module memory #(parameter M = 320, parameter N = 8) (
 
     // Declare the memory array
     reg [N-1:0] mem [0:M-1];
-    integer i;
+    integer i,j;
 
     always @(posedge clk or posedge reset) begin
         if (reset) begin
             // Asynchronous reset: clear all memory contents
-            mem[0] <= 0;
-            mem[1] <= 0;
-            mem[2] <= 0;
-            mem[3] <= 0;
-            mem[4] <= 0;
-            mem[5] <= 0;
+            for (i = 0; i < M; i = i + 1) begin
+                mem[i] <= 0; 
+            end
         end else if (write_enable) begin
             mem[addr] <= data_in;  // Write data to memory
         end
@@ -31,8 +28,9 @@ module memory #(parameter M = 320, parameter N = 8) (
         data_out = mem[addr];
 
         // Concatenate all memory data into all_data_out
-        for (i = 0; i < M; i = i + 1) begin
-            all_data_out[i*N +: N] = mem[i];
+        for (j = 0; j < M; j = j + 1) begin
+            all_data_out[j*N +: N] = mem[j];
         end
     end
+
 endmodule
