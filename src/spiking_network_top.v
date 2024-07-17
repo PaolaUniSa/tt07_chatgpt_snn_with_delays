@@ -17,7 +17,7 @@ module spiking_network_top#(
     wire clk_div_ready_sync;
     wire input_spike_ready_sync;   
     wire debug_config_ready_sync;
-    wire [1720-1:0] all_data_out; //3*8 +8+8+8+ 208*8 +8=208*8+56=1664+56 =1720  -- 215 bytes
+    wire [(24*8+8*2)*4+(24*8+8*2)*Nbits+4*Nbits+3*8+8-1+8:0] all_data_out; //3*8 +8+8+8+ 208*8 +8=208*8+56=1664+56 =1720  -- 215 bytes
     wire [23:0] input_spikes;   //[23:0] input_spikes;
     wire [Nbits-1:0] decay;
     wire [Nbits-1:0] refractory_period;
@@ -111,15 +111,15 @@ module spiking_network_top#(
 
     // Corrected Assignments
     // 3*8  +8 +8+8+ 208*8+8=208*8 +56=1664+56=   1720
-	assign input_spikes = all_data_out      [3*8-1                          :                      0];   
-    assign decay = all_data_out             [Nbits+3*8-1                    :                    3*8];   
-    assign refractory_period = all_data_out [2*Nbits+3*8-1                  :              Nbits+3*8];   
-    assign threshold = all_data_out         [3*Nbits+3*8-1     :                 2*Nbits+3*8];          
-    assign div_value = all_data_out         [4*Nbits+3*8+8-1:4*Nbits+3*8];                           
-    assign weights = all_data_out           [(24*8+8*2)*Nbits+4*Nbits+3*8+8-1:4*Nbits+3*8+8];                        
-    assign delays = all_data_out            [2*(24*8+8*2)*Nbits+4*Nbits+3*8+8-1 :(24*8+8*2)*Nbits+4*Nbits+3*8+8];    
-    assign debug_config_in = all_data_out   [2*(24*8+8*2)*Nbits+4*Nbits+3*8+8+8-1:2*(24*8+8*2)*Nbits+4*Nbits+3*8+8]; 
+	assign input_spikes = all_data_out      [3*8-1                          :                      0];   // 3 bytes
+    assign decay = all_data_out             [Nbits+3*8-1                    :                    3*8];   // 0:1 bits in the 4° byte
+    assign refractory_period = all_data_out [2*Nbits+3*8-1                  :              Nbits+3*8];   // 2:3 bits in the 4° byte
+    assign threshold = all_data_out         [3*Nbits+3*8-1     :                 2*Nbits+3*8];          // 4:5 bits in the 4° byte
+    assign div_value = all_data_out         [4*Nbits+3*8+8-1:4*Nbits+3*8];                              // 5° byte
+    assign weights = all_data_out           [(24*8+8*2)*Nbits+4*Nbits+3*8+8-1:4*Nbits+3*8+8];           //Nbits=2 is 416 bits -> 52 bytes (6:57)         
+    assign delays = all_data_out            [(24*8+8*2)*4+(24*8+8*2)*Nbits+4*Nbits+3*8+8-1 :(24*8+8*2)*Nbits+4*Nbits+3*8+8]; // 832 bits (104 bytes)
+    assign debug_config_in = all_data_out   [(24*8+8*2)*4+(24*8+8*2)*Nbits+4*Nbits+3*8+8-1+8:(24*8+8*2)*4+(24*8+8*2)*Nbits+4*Nbits+3*8+8]; 
 
-
+//(24*8+8*2)*4+(24*8+8*2)*Nbits+4*Nbits+3*8+8+8   with Nbits=2 = 1296   ---> 162 bytes
 endmodule   
 

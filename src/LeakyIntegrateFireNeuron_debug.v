@@ -14,7 +14,7 @@ module LeakyIntegrateFireNeuron_debug #(
 
     reg [Nbits-1:0] membrane_potential = 4'b0;  // Membrane potential (V_m), initialized to 0
     reg [Nbits-1:0] refractory_counter = 4'b0;  // Counter to handle the refractory period, initialized to 0
-    wire signed [Nbits+1:0] potential_update;   // Use a wire for immediate calculation, now Nbits + 2 
+    wire signed [Nbits+1:0] potential_update;   // Use a wire for immediate calculation, now Nbits + 2    3:0
 
 
     assign membrane_potential_out = membrane_potential;
